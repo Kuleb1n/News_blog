@@ -1,3 +1,5 @@
+{% load categories_teg %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -17,17 +19,8 @@
 
 <div class="container mt-3">
     <div class="row">
-        <div class="col-md-3">
-            <div class="text-center">
-                <ul class="list-group">
-                    <li class="list-group-item active" aria-current="true">Categories:</li>
-                    {% for category in categories %}
-                        <li class="list-group-item"><a href="{% url 'get_category' category.pk %}"
-                                                       class="nav-link">{{ category }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
+        {% get_categories %}
+
         {% block content %}
             content
         {% endblock %}
