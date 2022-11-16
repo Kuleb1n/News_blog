@@ -10,3 +10,17 @@ def index(request):
         'categories': categories,
     }
     return render(request, 'news/index.html', content)
+
+
+def get_category(request, category_id):
+    news = News.objects.filter(category_id=category_id)
+    categories = Category.objects.all()
+    category = Category.objects.get(pk=category_id)
+    content = {
+        'news': news,
+        'categories': categories,
+        'category': category,
+    }
+    return render(request, 'news/category.html', content)
+
+
