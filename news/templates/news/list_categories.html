@@ -3,7 +3,7 @@
         <ul class="list-group">
             <li class="list-group-item active" aria-current="true">Categories:</li>
             {% for category in cats %}
-                <li class="list-group-item"><a href="{% url 'get_category' category.pk %}"
+                <li class="list-group-item"><a href="{{ category.get_absolute_url }}"
                                                class="nav-link">{{ category }}</a></li>
             {% endfor %}
         </ul>
