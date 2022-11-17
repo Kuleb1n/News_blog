@@ -10,7 +10,7 @@
     <div class="col-md-9">
         {% for news in news %}
             <div class="card">
-                <h5 class="card-header">Category: <a href="#">{{ news.category }}</a></h5>
+                <h5 class="card-header">Category: <em>{{ news.category }}</em></h5>
                 <div class="card-body">
                     {% if news.photo %}
                         <img src="{{ news.photo.url }}" class="rounded float-start" width="350" alt="">
@@ -21,13 +21,14 @@
                     <h5 class="card-title text-center">{{ news.title }}</h5>
                     <p class="card-text">{{ news.content|truncatewords:150 }}</p>
                     <div class="d-grid gap-2 col-6 mx-auto">
-                        <a href="#" class="btn btn-primary ">Read more...</a>
+                        <a href="{{ news.get_absolute_url }}" class="btn btn-primary ">Read more...</a>
                     </div>
                 </div>
                 <div class="card-footer text-center">
                     {{ news.created_at|date:"Y-m-d, H:i:s" }}
                 </div>
             </div>
+            <br>
         {% endfor %}
     </div>
 {% endblock %}
