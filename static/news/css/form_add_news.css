@@ -1,0 +1,15 @@
+.col-md-9 {
+    background-color: #cccccc;
+    border-radius: 5%;
+}
+
+.form-error {
+    color: red;
+    font-size: 20px;
+}
+
+label {
+    font-size: 20px;
+    color: #000000;
+    font-weight: bold;
+}
