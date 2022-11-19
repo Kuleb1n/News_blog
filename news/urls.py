@@ -5,4 +5,5 @@ urlpatterns = [
     path('', index, name='index'),
     path('category/<slug:category_slug>/', show_category, name='show_category'),
     path('news/<slug:news_slug>/', show_news, name='show_news'),
+    path('add_news/', add_news, name='add_news'),
 ]
