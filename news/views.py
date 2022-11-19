@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import News, Category
+from .forms import AddNewsForm
 
 
 def index(request):
@@ -26,3 +27,18 @@ def show_news(request, news_slug):
         'news': news,
     }
     return render(request, 'news/show_news.html', content)
+
+
+def add_news(request):
+    if request.method == 'POST':
+        form = AddNewsForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = AddNewsForm()
+    content = {
+        'form': form
+    }
+
+    return render(request, 'news/add_news.html', content)
