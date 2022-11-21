@@ -26,8 +26,26 @@
         {% endblock %}
     </div>
 </div>
-
-
+{% if page_obj.has_other_pages %}
+    <nav>
+        <ul class="pagination pagination-lg justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ page_obj.previous_page_number }}">&laquo</a></li>
+            {% endif %}
+            {% for p in paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <li class="page-item active" aria-current="page"><span class="page-link">{{ p }}</span></li>
+                {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                    <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
