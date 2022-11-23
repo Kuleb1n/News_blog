@@ -1,8 +1,28 @@
 <nav class="navbar-center bg-dark">
     <header class="d-flex justify-content-center py-3">
+        <img src="/media/N.png" alt="" width="40">
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="{% url 'index' %}" class="nav-link px-4 link-white">Home</a></li>
-            <li><a href="{% url 'add_news' %}" class="nav-link px-4 link-white">Add news</a></li>
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url 'add_news' %}" class="nav-link px-4 link-white">Add news</a></li>
+                <li class="nav-link px-4 link-white">
+                    {{ user.username }}</li>
+                <a href="{% url 'logout' %}">
+                    <button type="button" class="btn btn-primary">Logout</button>
+                </a>
+            {% else %}
+                <li>
+                    <a href="{% url 'register' %}">
+                        <button type="button" class="btn btn-outline-primary me-2">Register
+                        </button>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'login' %}">
+                        <button type="button" class="btn btn-primary">log in</button>
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </header>
 </nav>
