@@ -1,6 +1,11 @@
+from django.contrib.auth import logout, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from .models import News
-from .forms import AddNewsForm
+from .forms import AddNewsForm, RegisterUserForm
 
 
 class NewsIndex(ListView):
@@ -39,3 +44,27 @@ class ShowNews(DetailView):
 class AddNews(CreateView):
     form_class = AddNewsForm
     template_name = 'news/add_news.html'
+
+
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = 'news/register.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('index')
+
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = 'news/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('index')
+
+
+def logout_us(request):
+    logout(request)
+    return redirect('index')
