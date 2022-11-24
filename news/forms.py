@@ -13,10 +13,6 @@ class AddNewsForm(forms.ModelForm):
     class Meta:
         model = News
         fields = ['title', 'slug', 'content', 'photo', 'is_published', 'category']
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-input'}),
-            'content': forms.Textarea(attrs={'col': 60, 'rows': 10}),
-        }
 
     def clean_title(self):
         title = self.cleaned_data['title']
