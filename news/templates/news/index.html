@@ -15,8 +15,7 @@
                     {% if news.photo %}
                         <img src="{{ news.photo.url }}" class="rounded float-start" width="350" alt="">
                     {% else %}
-                        <img src="https://w7.pngwing.com/pngs/666/657/png-transparent-white-house-plan-food-republican-party-health-menu-blank-angle-food-rectangle.png"
-                             class="rounded float-start" width="350" alt="">
+                        <img src="/media/N.png" class="rounded float-start" width="350" alt="">
                     {% endif %}
                     <h5 class="card-title text-center">{{ news.title }}</h5>
                     <p class="card-text">{{ news.content|truncatewords:145 }}</p>
