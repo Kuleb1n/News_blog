@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
-from .models import News
+from .models import News, Category
 from .forms import AddNewsForm, RegisterUserForm
 
 
@@ -15,7 +15,7 @@ class NewsIndex(ListView):
     context_object_name = 'news'
 
     def get_queryset(self):
-        return News.objects.filter(is_published=True)
+        return News.objects.filter(is_published=True).select_related('category')
 
 
 class ShowNewsByCategory(ListView):
@@ -26,11 +26,12 @@ class ShowNewsByCategory(ListView):
     allow_empty = False
 
     def get_queryset(self):
-        return News.objects.filter(category__slug=self.kwargs['category_slug'], is_published=True)
+        return News.objects.filter(category__slug=self.kwargs['category_slug'], is_published=True).select_related(
+            'category')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = str(context['news'][0].category)
+        context['title'] = str(Category.objects.get(slug=self.kwargs['category_slug']))
         return context
 
 
