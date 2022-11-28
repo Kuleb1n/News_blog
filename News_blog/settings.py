@@ -31,6 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# User
+AUTH_USER_MODEL = 'news.User'
+
 # Application definition
 
 INSTALLED_APPS = [
