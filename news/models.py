@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
 
 
 class News(models.Model):
@@ -11,6 +13,7 @@ class News(models.Model):
     photo = models.ImageField('Photo', upload_to='photo/%Y/%m/%d/', blank=True)
     is_published = models.BooleanField('Published', default=True)
     category = models.ForeignKey('Category', on_delete=models.PROTECT)
+    user = models.ForeignKey('User', on_delete=models.SET_DEFAULT, default='User not found')
 
     def __str__(self):
         return self.title
@@ -38,3 +41,15 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse('show_category', kwargs={'category_slug': self.slug})
+
+
+class User(AbstractUser):
+    email = models.EmailField(_("Email address"), unique=True)
+    short_status = models.CharField('Status', blank=True, max_length=100)
+    user_photo = models.ImageField('User photo', upload_to='users/%Y/%m/%d/', default='user_def.png')
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    def __str__(self):
+        return self.email
