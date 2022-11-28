@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from captcha.fields import CaptchaField
-from .models import News
+from .models import News, User
 from django.core.exceptions import ValidationError
 
 
@@ -13,7 +12,7 @@ class AddNewsForm(forms.ModelForm):
 
     class Meta:
         model = News
-        fields = ['title', 'slug', 'content', 'photo', 'is_published', 'category']
+        fields = ['title', 'slug', 'content', 'photo', 'is_published', 'category', 'user']
 
     def clean_title(self):
         title = self.cleaned_data['title']
@@ -29,3 +28,9 @@ class RegisterUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2', 'captcha')
+
+
+class ChangeUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'short_status', 'first_name', 'last_name', 'user_photo')
