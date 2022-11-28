@@ -1,11 +1,13 @@
 from django.contrib.auth import logout, login
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
-from .models import News, Category
-from .forms import AddNewsForm, RegisterUserForm
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from .models import News, Category, User
+from .forms import AddNewsForm, RegisterUserForm, ChangeUserForm
 
 
 class NewsIndex(ListView):
@@ -59,7 +61,6 @@ class RegisterUser(CreateView):
 
 
 class LoginUser(LoginView):
-    form_class = AuthenticationForm
     template_name = 'news/login.html'
 
     def get_success_url(self):
@@ -69,3 +70,33 @@ class LoginUser(LoginView):
 def logout_us(request):
     logout(request)
     return redirect('index')
+
+
+@login_required
+def profile(request):
+    return render(request, 'news/profile.html')
+
+
+class ChangeUser(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'news/change_user.html'
+    form_class = ChangeUserForm
+    success_url = reverse_lazy('profile')
+    success_message = 'Данные пользователя изменены'
+
+    def setup(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+
+        return super().setup(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+
+        return get_object_or_404(queryset, pk=self.user_id)
+
+
+class PasswordChange(SuccessMessageMixin, LoginRequiredMixin, PasswordChangeView):
+    template_name = 'news/password_change.html'
+    success_url = reverse_lazy('profile')
+    success_message = "The user's password has been changed"
