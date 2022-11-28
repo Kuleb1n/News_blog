@@ -5,8 +5,9 @@
             <li><a href="{% url 'index' %}" class="nav-link px-4 link-white">Home</a></li>
             {% if request.user.is_authenticated %}
                 <li><a href="{% url 'add_news' %}" class="nav-link px-4 link-white">Add news</a></li>
-                <li class="nav-link px-4 link-white">
-                    {{ user.username }}</li>
+                <li>
+                    <img src="{{ user.user_photo.url }}" alt="мдо" width="32" height="32" class="rounded-circle"></li>
+                <li><a href="{% url 'profile' %}" class="nav-link px-4 link-white">{{ user.username }}</a></li>
                 <a href="{% url 'logout' %}">
                     <button type="button" class="btn btn-primary">Logout</button>
                 </a>
