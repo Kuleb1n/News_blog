@@ -12,4 +12,5 @@ urlpatterns = [
     path('accounts/profile/', profile, name='profile'),
     path('accounts/profile/change/', ChangeUser.as_view(), name='profile_change'),
     path('accounts/password/change/', PasswordChange.as_view(), name='password_change'),
+    path('show/profile/<int:user_pk>/', ShowProfile.as_view(), name='show_profile'),
 ]
