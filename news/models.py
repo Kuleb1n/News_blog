@@ -53,3 +53,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    def get_absolute_url(self):
+        return reverse('show_profile', kwargs={'user_pk': self.pk})
