@@ -48,6 +48,12 @@
                        class="form-label">{{ form.category.label }}:</label>
                 {{ form.category }}
                 <div class="form-error">{{ form.category.errors }}</div>
+                <div>
+                        <label for="id_user">User:</label>
+                        <select name="user" id="id_user">
+                            <option value="{{ request.user.pk }}">{{ request.user.email }}</option>
+                        </select>
+                </div>
                 <br>
                 <div class="d-grid gap-2 col-6 mx-auto">
                     <button class="btn btn-primary" type="submit">Add news</button>
