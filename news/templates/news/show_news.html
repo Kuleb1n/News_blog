@@ -7,8 +7,11 @@
 {% block content %}
     <div class="col-md-9">
         <div class="card mb-3">
-            <h5 class="card-header">Category: <em>{{ news.category }}</em></h5>
+            <h5 class="card-header">
+                Posted by user: <em>{{ news.user.username }}</em>
+            </h5>
             <div class="card-body">
+                <h5 class="card-title text-center">{{ news.title }}</h5>
                 <div class="text-center">
                     {% if news.photo %}
                         <img src="{{ news.photo.url }}" width="100%">
@@ -16,11 +19,12 @@
                         <img src="/media/N.png" width="100%">
                     {% endif %}
                 </div>
-                <h5 class="card-title text-center">{{ news.title }}</h5>
                 <p class="card-text">{{ news.content|linebreaks }}</p>
             </div>
             <div class="card-footer text-center">
                 {{ news.created_at|date:"Y-m-d, H:i:s" }}
+                <h5>Category:<a href="{{ news.category.get_absolute_url }}">{{ news.category }}</a>
+                </h5>
             </div>
         </div>
     </div>
