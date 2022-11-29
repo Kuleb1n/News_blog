@@ -9,8 +9,18 @@
     <div class="col-md-9">
         {% for news in news %}
             <div class="card mb-3">
-                <h5 class="card-header">Category:
-                    <a href="{{ news.category.get_absolute_url }}">{{ news.category }}</a></h5>
+                <h5 class="card-header">
+                    {% if request.user.is_authenticated %}
+                        Posted by user:
+                        {% if request.user.username == news.user.username %}
+                            <em><a href="{% url 'profile' %}">{{ news.user.username }}</a></em>
+                        {% else %}
+                            <em><a href="{{ news.user.get_absolute_url }}">{{ news.user.username }}</a></em>
+                        {% endif %}
+                    {% else %}
+                        Posted by user: <em>{{ news.user.username }}</em>
+                    {% endif %}
+                </h5>
                 <div class="card-body">
                     {% if news.photo %}
                         <img src="{{ news.photo.url }}" class="rounded float-start" width="350" alt="">
@@ -23,8 +33,11 @@
                         <a href="{{ news.get_absolute_url }}" class="btn btn-primary ">Read more...</a>
                     </div>
                 </div>
+
                 <div class="card-footer text-center">
                     {{ news.created_at|date:"Y-m-d, H:i:s" }}
+                    <h5>Category:<a href="{{ news.category.get_absolute_url }}">{{ news.category }}</a>
+                    </h5>
                 </div>
             </div>
         {% endfor %}
