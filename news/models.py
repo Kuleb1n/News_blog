@@ -13,7 +13,7 @@ class News(models.Model):
     photo = models.ImageField('Photo', upload_to='photo/%Y/%m/%d/', blank=True)
     is_published = models.BooleanField('Published', default=True)
     category = models.ForeignKey('Category', on_delete=models.PROTECT)
-    user = models.ForeignKey('User', on_delete=models.SET_DEFAULT, default='User not found')
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
