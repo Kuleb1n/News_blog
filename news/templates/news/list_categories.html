@@ -1,11 +1,6 @@
-<div class="col-md-3">
-    <div class="text-center">
-        <ul class="list-group">
-            <li class="list-group-item active" aria-current="true">Categories:</li>
-            {% for category in cats %}
-                <li class="list-group-item"><a href="{{ category.get_absolute_url }}"
-                                               class="nav-link">{{ category }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
+<nav class="container d-flex flex-column flex-md-row justify-content-between">
+    {% for category in cats %}
+        <li class="py-2 d-none d-md-inline-block"><a href="{{ category.get_absolute_url }}"
+                                                     class="nav-link">{{ category }}</a></li>
+    {% endfor %}
+</nav>
