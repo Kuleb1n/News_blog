@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Deleting news
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0">Do you really want to delete a news item with the name
+                    <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        <b>{{ news.title }}</b>
+                    </button>
+                    ?
+                </h5>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">{{ news.title }}</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {% if news.photo %}
+                                    <img src="{{ news.photo.url }}" height="400" width="100%">
+                                {% else %}
+                                    <img src="/media/N.png" height="400" width="100%">
+                                {% endif %}
+                                {{ news.content }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer flex-nowrap p-0">
+                <button type="button" class="w-50 btn btn-sm-secondary">
+                    <a href="{% url 'index' %}" class="w-100 btn btn-secondary">
+                        Cancel
+                    </a>
+                </button>
+                <input type="submit" value="Delete" class=" w-50 btn btn btn-danger"
+                       data-bs-dismiss="modal">
+            </div>
+        </div>
+    </form>
+{% endblock %}
