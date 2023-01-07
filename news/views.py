@@ -3,10 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import News, Category, User
 from .forms import AddNewsForm, RegisterUserForm, ChangeUserForm
 
@@ -48,6 +47,13 @@ class ShowNews(DetailView):
 class AddNews(CreateView):
     form_class = AddNewsForm
     template_name = 'news/add_news.html'
+
+
+class DeleteNews(DeleteView):
+    model = News
+    slug_url_kwarg = 'news_slug'
+    template_name = 'news/delete_news.html'
+    success_url = reverse_lazy('profile')
 
 
 class RegisterUser(CreateView):
