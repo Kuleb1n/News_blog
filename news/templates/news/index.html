@@ -28,7 +28,7 @@
                                 </button>
                                 {% if request.user.is_authenticated and user.pk == news.user.pk %}
                                     <button type="button" class="btn btn-sm btn-outline-danger">
-                                        <a href="#" class="btn btn-sm">
+                                        <a href="{% url 'delete' news.slug %}" class="btn btn-sm">
                                             Delete
                                         </a>
                                     </button>
