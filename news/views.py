@@ -11,7 +11,7 @@ from .forms import AddNewsForm, RegisterUserForm, ChangeUserForm
 
 
 class NewsIndex(ListView):
-    paginate_by = 3
+    paginate_by = 4
     model = News
     template_name = 'news/index.html'
     context_object_name = 'news'
@@ -21,7 +21,7 @@ class NewsIndex(ListView):
 
 
 class ShowNewsByCategory(ListView):
-    paginate_by = 3
+    paginate_by = 4
     model = News
     template_name = 'news/category.html'
     context_object_name = 'news'
@@ -54,6 +54,13 @@ class DeleteNews(DeleteView):
     slug_url_kwarg = 'news_slug'
     template_name = 'news/delete_news.html'
     success_url = reverse_lazy('profile')
+
+
+class UpdateNews(UpdateView):
+    model = News
+    slug_url_kwarg = 'news_slug'
+    fields = ['photo', 'content']
+    template_name = 'news/update_news.html'
 
 
 class RegisterUser(CreateView):
