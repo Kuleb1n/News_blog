@@ -5,13 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <script src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
-    <script src="https://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.js"></script>
-
     <br><br><br>
-
     <style>
         body {
             background: url(https://bootstraptema.ru/images/bg/bg-1.png)
@@ -54,20 +48,17 @@
         #real-estates-detail .slides li img {
             height: 450px;
         }
-    </style>
 
+        .vl {
+            border-left: 1px solid #dee2e6;
+        }
+    </style>
+    <br><br>
     <div class="container">
         <div id="main">
             <div class="row" id="real-estates-detail">
                 <div class="col-lg-4 col-md-4 col-xs-12">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <header class="panel-title">
-                                <div class="text-center">
-                                    <strong>Site user</strong>
-                                </div>
-                            </header>
-                        </div>
                         <div class="panel-body">
                             <div class="text-center" id="author">
                                 <img src="{{ user.user_photo.url }}" width="100%">
@@ -81,40 +72,51 @@
                 <div class="col-lg-8 col-md-8 col-xs-12">
                     <div class="panel">
                         <div class="panel-body">
-                            <div id="myTabContent" class="tab-content">
-                                <hr>
-                                <div class="tab-pane fade active in" id="detail">
+                            <div class="tab-content">
+                                <div class="table">
                                     <h4>Profile Data</h4>
                                     <table class="table table-th-block">
                                         <tbody>
                                         <tr>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
                                             <td class="active">Name:</td>
-                                            <td>{{ user.first_name }}</td>
+                                            <td class="vl">{{ user.first_name }}</td>
                                         </tr>
                                         <tr>
                                             <td class="active">Last name:</td>
-                                            <td>{{ user.last_name }}</td>
+                                            <td class="vl">{{ user.last_name }}</td>
                                         </tr>
                                         <tr>
                                             <td class="active">Email:</td>
-                                            <td>{{ user.email }}</td>
+                                            <td class="vl">{{ user.email }}</td>
                                         </tr>
                                         <tr>
                                             <td class="active">Registered:</td>
-                                            <td>{{ user.date_joined }}</td>
+                                            <td class="vl">{{ user.date_joined }}</td>
                                         </tr>
                                         <tr>
                                             <td class="active">Published news:</td>
-                                            <td>{{ news.count }}</td>
+                                            <td class="vl">{{ news.count }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="d-grid gap-2 col-6 mx-auto">
-                                    <button class="nav-link px-4 link-white"><a href="{% url 'profile_change' %}">Change
-                                        profile data</a></button>
-                                    <button class="nav-link px-4 link-white"><a href="{% url 'password_change' %}">Change
-                                        password</a></button>
+                                <br><br><br><br><br>
+                                <div class="d-grid gap-2 col-15 justify-content-md-end">
+                                    <a href="{% url 'profile_change' %}"
+                                       class="w-100 btn btn-outline-secondary">
+                                        Change profile data
+                                    </a>
+                                    <a href="{% url 'password_change' %}"
+                                       class="w-100 btn btn-outline-secondary">
+                                        Change password
+                                    </a>
+                                    <a href="#"
+                                       class="w-100 btn btn-outline-danger">
+                                        Delete Profile
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -122,28 +124,44 @@
                 </div>
             </div>
         </div>
-        {% for news in news %}
-            <div class="card mb-5">
-                <div class="card-body">
-                    {% if news.photo %}
-                        <img src="{{ news.photo.url }}" class="rounded float-start" width="350" alt="">
-                    {% else %}
-                        <img src="/media/N.png" class="rounded float-start" width="350" alt="">
-                    {% endif %}
-                    <h5 class="card-title text-center">{{ news.title }}</h5>
-                    <p class="card-text">{{ news.content|truncatewords:145 }}</p>
-                    <div class="d-grid gap-2 col-6 mx-auto">
-                        <a href="{{ news.get_absolute_url }}" class="btn btn-primary ">Read more...</a>
+        <br>
+        <div class="row row-cols-1 row-cols-sm-3 g-3">
+            {% for news in news %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        {% if news.photo %}
+                            <img src="{{ news.photo.url }}" height="300" width="100%">
+                        {% else %}
+                            <img src="/media/N.png" height="300" width="100%">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title text-center">{{ news.title }}</h5>
+                            <p class="card-text">{{ news.content|truncatewords:50 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="{{ news.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">
+                                        Read
+                                    </a>
+                                    {% if request.user.is_authenticated and user.pk == news.user.pk %}
+                                        <a href="{% url 'delete' news.slug %}" class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </a>
+                                        <a href="{% url 'news-update' news.slug %}"
+                                           class="btn btn-sm btn-outline-success">
+                                            Update
+                                        </a>
+
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">
+                                    {{ news.created_at|date:"Y-m-d, H:i:s" }}
+                                </small>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="card-footer text-center">
-                    {{ news.created_at|date:"Y-m-d, H:i:s" }}
-                    <h5>Category:<a href="{{ news.category.get_absolute_url }}">{{ news.category }}</a>
-                    </h5>
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+    <br>
 {% endblock %}
-
