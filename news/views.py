@@ -124,4 +124,4 @@ class ShowProfile(DetailView):
     model = User
     template_name = 'news/show_profile.html'
     pk_url_kwarg = 'user_pk'
-    context_object_name = 'news'
+    context_object_name = 'user'
