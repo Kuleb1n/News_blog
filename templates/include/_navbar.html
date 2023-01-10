@@ -7,21 +7,21 @@
             {% if request.user.is_authenticated %}
                 <li><a href="{% url 'add_news' %}" class="nav-link px-4 link-white">Add news</a></li>
                 <li>
-                    <img src="{{ user.user_photo.url }}" alt="мдо" width="32" height="32" class="rounded-circle"></li>
-                <li><a href="{% url 'profile' %}" class="nav-link px-4 link-white">{{ user.username }}</a></li>
-                <a href="{% url 'logout' %}">
-                    <button type="button" class="btn btn-primary">Logout</button>
+                    <img src="{{ request.user.user_photo.url }}" alt="мдо" width="32" height="32"
+                         class="rounded-circle"></li>
+                <li><a href="{% url 'profile' %}" class="nav-link px-4 link-white">{{ request.user.username }}</a></li>
+                <a href="{% url 'logout' %}" class="btn btn-primary">
+                    Logout
                 </a>
             {% else %}
                 <li>
-                    <a href="{% url 'register' %}">
-                        <button type="button" class="btn btn-outline-primary me-2">Register
-                        </button>
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary me-2">
+                        Register
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'login' %}">
-                        <button type="button" class="btn btn-primary">log in</button>
+                    <a href="{% url 'login' %}" class="btn btn-primary">
+                        log in
                     </a>
                 </li>
             {% endif %}
