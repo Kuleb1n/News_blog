@@ -1,6 +1,6 @@
 .col-md-9 {
     background-color: #cccccc;
-    border-radius: 5%;
+    border-radius: 3%;
 }
 
 .form-error {
@@ -12,4 +12,8 @@ label {
     font-size: 20px;
     color: #000000;
     font-weight: bold;
+}
+
+.hide {
+    display: none;
 }
