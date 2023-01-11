@@ -1,167 +1,36 @@
-{% extends 'news/base_user.html' %}
+{% extends 'basic_profile.html' %}
 
 {% block title %}
     Profile
 {% endblock %}
 
-{% block content %}
-    <br><br><br>
-    <style>
-        body {
-            background: url(https://bootstraptema.ru/images/bg/bg-1.png)
-        }
-
-        #main {
-            background-color: #f2f2f2;
-            padding: 20px;
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            -ms-border-radius: 4px;
-            -o-border-radius: 4px;
-            border-radius: 4px;
-            border-bottom: 4px solid #ddd;
-        }
-
-        #real-estates-detail #author img {
-            -webkit-border-radius: 100%;
-            -moz-border-radius: 100%;
-            -ms-border-radius: 100%;
-            -o-border-radius: 100%;
-            border-radius: 100%;
-            border: 5px solid #ecf0f1;
-            margin-bottom: 10px;
-        }
-
-        #real-estates-detail .sosmed-author i.fa {
-            width: 30px;
-            height: 30px;
-            border: 2px solid #bdc3c7;
-            color: #bdc3c7;
-            padding-top: 6px;
-            margin-top: 10px;
-        }
-
-        .panel-default .panel-heading {
-            background-color: #fff;
-        }
-
-        #real-estates-detail .slides li img {
-            height: 450px;
-        }
-
-        .vl {
-            border-left: 1px solid #dee2e6;
-        }
-    </style>
-    <br><br>
-    <div class="container">
-        <div id="main">
-            <div class="row" id="real-estates-detail">
-                <div class="col-lg-4 col-md-4 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="text-center" id="author">
-                                <img src="{{ user.user_photo.url }}" width="100%">
-                                <h3>{{ user.username }}</h3>
-                                <p>Status:</p>
-                                <p>{{ user.short_status }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-8 col-md-8 col-xs-12">
-                    <div class="panel">
-                        <div class="panel-body">
-                            <div class="tab-content">
-                                <div class="table">
-                                    <h4>Profile Data</h4>
-                                    <table class="table table-th-block">
-                                        <tbody>
-                                        <tr>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="active">Name:</td>
-                                            <td class="vl">{{ user.first_name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="active">Last name:</td>
-                                            <td class="vl">{{ user.last_name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="active">Email:</td>
-                                            <td class="vl">{{ user.email }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="active">Registered:</td>
-                                            <td class="vl">{{ user.date_joined }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="active">Published news:</td>
-                                            <td class="vl">{{ news.count }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <br><br><br><br><br>
-                                <div class="d-grid gap-2 col-15 justify-content-md-end">
-                                    <a href="{% url 'profile_change' %}"
-                                       class="w-100 btn btn-outline-secondary">
-                                        Change profile data
-                                    </a>
-                                    <a href="{% url 'password_change' %}"
-                                       class="w-100 btn btn-outline-secondary">
-                                        Change password
-                                    </a>
-                                    <a href="#"
-                                       class="w-100 btn btn-outline-danger">
-                                        Delete Profile
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="row row-cols-1 row-cols-sm-3 g-3">
-            {% for news in news %}
-                <div class="col">
-                    <div class="card shadow-sm">
-                        {% if news.photo %}
-                            <img src="{{ news.photo.url }}" height="300" width="100%">
-                        {% else %}
-                            <img src="/media/N.png" height="300" width="100%">
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title text-center">{{ news.title }}</h5>
-                            <p class="card-text">{{ news.content|truncatewords:50 }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <a href="{{ news.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">
-                                        Read
-                                    </a>
-                                    {% if request.user.is_authenticated and user.pk == news.user.pk %}
-                                        <a href="{% url 'delete' news.slug %}" class="btn btn-sm btn-outline-danger">
-                                            Delete
-                                        </a>
-                                        <a href="{% url 'news-update' news.slug %}"
-                                           class="btn btn-sm btn-outline-success">
-                                            Update
-                                        </a>
-
-                                    {% endif %}
-                                </div>
-                                <small class="text-muted">
-                                    {{ news.created_at|date:"Y-m-d, H:i:s" }}
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+{% block link%}
+    <br><br><br><br>
+    <div class="d-grid gap-2 col-15 justify-content-md-end">
+        <a href="{% url 'profile_change' %}"
+           class="w-100 btn btn-outline-secondary">
+            Change profile data
+        </a>
+        <a href="{% url 'password_change' %}"
+           class="w-100 btn btn-outline-secondary">
+            Change password
+        </a>
+        <a href="{% url 'delete-account' user.pk %}"
+           class="w-100 btn btn-outline-danger">
+            Delete Profile
+        </a>
     </div>
-    <br>
+{% endblock %}
+
+{% block is_authenticated %}
+    <div class="btn-group">
+        {% if request.user.is_authenticated and user.pk == news.user.pk %}
+            <a href="{% url 'delete' news.slug %}" class="btn btn-sm btn-outline-danger">
+                Delete
+            </a>
+            <a href="{% url 'news-update' news.slug %}" class="btn btn-sm btn-outline-success">
+                Update
+            </a>
+        {% endif %}
+    </div>
 {% endblock %}
