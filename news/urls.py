@@ -12,6 +12,7 @@ urlpatterns = [
     path('register/', RegisterUser.as_view(), name='register'),
     path('logout/', logout_us, name='logout'),
     path('accounts/profile/', profile, name='profile'),
+    path('delete-account/<int:account_pk>', DeleteAccount.as_view(), name='delete-account'),
     path('accounts/profile/change/', ChangeUser.as_view(), name='profile_change'),
     path('accounts/password/change/', PasswordChange.as_view(), name='password_change'),
     path('show/profile/<int:user_pk>/', ShowProfile.as_view(), name='show_profile'),
