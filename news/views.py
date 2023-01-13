@@ -81,6 +81,13 @@ class LoginUser(LoginView):
         return reverse_lazy('index')
 
 
+class DeleteAccount(DeleteView):
+    model = User
+    pk_url_kwarg = 'account_pk'
+    template_name = 'news/delete_account.html'
+    success_url = reverse_lazy('login')
+
+
 def logout_us(request):
     logout(request)
     return redirect('index')
