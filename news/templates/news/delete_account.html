@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Delete account
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <h1>Are you sure you want to delete your account?</h1>
+        <div class="modal-footer flex-nowrap">
+                <a href="{% url 'profile' %}" class="w-50 btn btn-secondary">
+                    Cancel
+                </a>
+            <input type="submit" value="Delete account" class="w-50 btn btn btn-danger"
+                   data-bs-dismiss="modal">
+        </div>
+    </form>
+{% endblock %}
