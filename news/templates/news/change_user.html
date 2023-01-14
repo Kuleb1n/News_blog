@@ -1,55 +1,169 @@
-{% extends 'news/base_user.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
     Changing user data
 {% endblock %}
 
 {% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="album py-5 bg-light">
+            <div class="container">
+                <style>
+                    body {
+                        background: url(https://bootstraptema.ru/images/bg/bg-1.png)
+                    }
 
-    <div class="container col-md-3 mt-3 ">
-        <h1>Changing user data</h1>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="col-sm-5">
-                <label for="id_username">Username:</label>
-                <input type="text" name="username" value="{{ user.username }}" maxlength="150" required=""
-                       id="id_username" class="form-control">
-                <div class="form-error">{{ form.username.errors }}</div>
+                    #main {
+                        background-color: #f2f2f2;
+                        padding: 20px;
+                        -webkit-border-radius: 4px;
+                        -moz-border-radius: 4px;
+                        -ms-border-radius: 4px;
+                        -o-border-radius: 4px;
+                        border-radius: 4px;
+                        border-bottom: 4px solid #ddd;
+                    }
+
+                    #real-estates-detail #author img {
+                        -webkit-border-radius: 100%;
+                        -moz-border-radius: 100%;
+                        -ms-border-radius: 100%;
+                        -o-border-radius: 100%;
+                        border-radius: 100%;
+                        border: 5px solid #ecf0f1;
+                        margin-bottom: 10px;
+                    }
+
+                    #real-estates-detail .sosmed-author i.fa {
+                        width: 30px;
+                        height: 30px;
+                        border: 2px solid #bdc3c7;
+                        color: #bdc3c7;
+                        padding-top: 6px;
+                        margin-top: 10px;
+                    }
+
+                    .panel-default .panel-heading {
+                        background-color: #fff;
+                    }
+
+                    #real-estates-detail .slides li img {
+                        height: 450px;
+                    }
+
+                    .vl {
+                        border-left: 1px solid #dee2e6;
+                    }
+
+                </style>
+                <div class="container">
+                    <div id="main">
+                        <div class="row" id="real-estates-detail">
+                            <div class="col-lg-4 col-md-4 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="text-center" id="author">
+                                            <img src="{{ user.user_photo.url }}" width="100%">
+                                            <input type="file" name="user_photo" accept="image/*" id="id_user_photo"
+                                                   class="btn">
+                                            <label for="id_username">Username:</label>
+                                            <input type="text" name="username" value="{{ user.username }}"
+                                                   maxlength="150" required=""
+                                                   id="id_username" class="form-control">
+                                            <div class="form-error">{{ form.username.errors }}</div>
+                                            <div>Status:</div>
+                                            <input type="text" name="short_status" value="{{ user.short_status }}"
+                                                   maxlength="100"
+                                                   id="id_short_status" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-xs-12">
+                                <div class="panel">
+                                    <div class="panel-body">
+                                        <div class="tab-content">
+                                            <div class="table">
+                                                <h4>Profile Data</h4>
+                                                <table class="table table-th-block">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="active">Name:</td>
+                                                        <td class="vl"><input type="text" name="first_name"
+                                                                              value="{{ user.first_name }}"
+                                                                              maxlength="150" id="id_first_name"
+                                                                              class="form-control"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="active">Last name:</td>
+                                                        <td class="vl"><input type="text" name="last_name"
+                                                                              value="{{ user.last_name }}"
+                                                                              maxlength="150" id="id_last_name"
+                                                                              class="form-control"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="active">Email:</td>
+                                                        <td class="vl"><input type="email" name="email"
+                                                                              value="{{ user.email }}" maxlength="254"
+                                                                              required="" id="id_email"
+                                                                              class="form-control"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="active">Registered:</td>
+                                                        <td class="vl">{{ user.date_joined }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="active">Published news:</td>
+                                                        <td class="vl">{{ user.news_set.count }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <button class="w-100 btn btn-lg btn-success" type="submit">
+                                                Update profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row row-cols-1 row-cols-sm-3 g-3">
+                        {% for news in user.news_set.select_related %}
+                            <div class="col">
+                                <div class="card shadow-sm">
+                                    {% if news.photo %}
+                                        <img src="{{ news.photo.url }}" height="300" width="100%">
+                                    {% else %}
+                                        <img src="/media/N.png" height="300" width="100%">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">{{ news.title }}</h5>
+                                        <p class="card-text">{{ news.content|truncatewords:50 }}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <a href="{{ news.get_absolute_url }}"
+                                                   class="btn btn-sm btn-outline-secondary">
+                                                    Read
+                                                </a>
+                                                {% block is_authenticated %}
+                                                {% endblock %}
+                                            </div>
+                                            <small class="text-muted">{{ news.created_at|date:"Y-m-d, H:i:s" }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <br>
+                </div>
             </div>
-            <div class="col-sm-5">
-                <label for="id_email">Email address:</label>
-                <input type="email" name="email" value="{{ user.email }}" maxlength="254" required="" id="id_email"
-                       class="form-control">
-            </div>
-            <div class="col-sm-5">
-                <label for="id_short_status">Status:</label>
-                <input type="text" name="short_status" value="{{ user.short_status }}" maxlength="100"
-                       id="id_short_status" class="form-control">
-            </div>
-            <div class="col-sm-5">
-                <label for="id_first_name">First name:</label>
-                <input type="text" name="first_name" value="{{ user.first_name }}" maxlength="150" id="id_first_name"
-                       class="form-control">
-            </div>
-            <div class="col-sm-5">
-                <label for="id_last_name">Last name:</label>
-                <input type="text" name="last_name" value="{{ user.last_name }}" maxlength="150" id="id_last_name"
-                       class="form-control">
-            </div>
-            <div class="col-sm-5">
-                <label for="id_user_photo">User photo:</label>
-                <a href="/media/users/2022/11/28/791603d9-e674-4f8c-83f2-c54f4caa6210.jfif">{{ user.user_photo.url }}</a><br>
-                Change:
-                <input type="file" name="user_photo" accept="image/*" id="id_user_photo">
-            </div>
-            <br>
-            <div class="col-sm-5">
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 {% endblock %}
-
-
-
-##########################
