@@ -1,36 +1,44 @@
 {% extends 'base.html' %}
 
-
 {% block title %}
     {{ title }}
 {% endblock %}
 
-
 {% block content %}
-    <div class="col-md-9">
+    <div class="row row-cols-1 row-cols-sm-3 g-3">
         {% for news in news %}
-            <div class="card">
-                <h5 class="card-header">Category: <em>{{ news.category }}</em></h5>
-                <div class="card-body">
+            <div class="col">
+                <div class="card shadow-sm">
                     {% if news.photo %}
-                        <img src="{{ news.photo.url }}" class="rounded float-start" width="350" alt="">
+                        <img src="{{ news.photo.url }}" height="300" width="100%">
                     {% else %}
-                        <img src="/media/N.png"
-                             class="rounded float-start" width="350" alt="">
+                        <img src="/media/N.png" height="300" width="100%">
                     {% endif %}
-                    <h5 class="card-title text-center">{{ news.title }}</h5>
-                    <p class="card-text">{{ news.content|truncatewords:150 }}</p>
-                    <div class="d-grid gap-2 col-6 mx-auto">
-                        <a href="{{ news.get_absolute_url }}" class="btn btn-primary ">Read more...</a>
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ news.title }}</h5>
+                        <p class="card-text">{{ news.content|truncatewords:50 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{{ news.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">
+                                    Read
+                                </a>
+                                {% if request.user.is_authenticated and user.pk == news.user.pk %}
+                                    <a href="{% url 'delete' news.slug %}" class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </a>
+                                    <a href="{% url 'news-update' news.slug %}"
+                                       class="btn btn-sm btn-outline-success">
+                                        Update
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <small class="text-muted">
+                                {{ news.created_at|date:"Y-m-d, H:i:s" }}
+                            </small>
+                        </div>
                     </div>
                 </div>
-                <div class="card-footer text-center">
-                    {{ news.created_at|date:"Y-m-d, H:i:s" }}
-                </div>
             </div>
-            <br>
         {% endfor %}
     </div>
 {% endblock %}
-
-
