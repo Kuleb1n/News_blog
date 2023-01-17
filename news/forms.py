@@ -18,8 +18,17 @@ class AddNewsForm(forms.ModelForm):
         title = self.cleaned_data['title']
         if title[0].isdigit():
             raise ValidationError('The title should not start with a digit!')
-
         return title
+
+    def clean_slug(self):
+        slug = ''
+        for letter in self.cleaned_data['title']:
+            if letter.isalnum():
+                slug += letter
+            elif letter == ' ':
+                slug += '-'
+
+        return slug
 
 
 class RegisterUserForm(UserCreationForm):
