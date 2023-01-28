@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.safestring import mark_safe
 
-from .models import News, Category, User
+from .models import News, Category, User, RatingStar, Rating
 
 
 class NewsAdmin(admin.ModelAdmin):
@@ -12,7 +12,9 @@ class NewsAdmin(admin.ModelAdmin):
     search_fields = ['title', 'content']
     list_editable = ['is_published']
     prepopulated_fields = {"slug": ("title",)}
-    fields = ('title', 'slug', 'category', 'content', 'photo', 'get_photo', 'updated_at', 'created_at', 'is_published')
+    fields = (
+        'title', 'slug', 'category', 'content', 'photo', 'get_photo', 'updated_at', 'created_at', 'is_published',
+        'user')
     readonly_fields = ('get_photo', 'updated_at', 'created_at')
     actions = ['make_published', 'make_unpublished']
 
@@ -62,6 +64,17 @@ class UserAdmin(admin.ModelAdmin):
     get_photo.short_description = "User_photo"
 
 
+class RatingStarAdmin(admin.ModelAdmin):
+    list_display = ['id', 'value']
+
+
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ['id', 'star', 'user', 'news', 'rating_date']
+    fields = ('news', 'user', 'star')
+
+
 admin.site.register(News, NewsAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(User, UserAdmin)
+admin.site.register(RatingStar, RatingStarAdmin)
+admin.site.register(Rating, RatingAdmin)
