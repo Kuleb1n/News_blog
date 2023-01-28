@@ -56,3 +56,29 @@ class User(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('show_profile', kwargs={'user_pk': self.pk})
+
+
+class RatingStar(models.Model):
+    value = models.SmallIntegerField('Rating value', default=0)
+
+    def __str__(self):
+        return f'{self.value}'
+
+    class Meta:
+        verbose_name = 'Rating value'
+        verbose_name_plural = 'Rating values'
+        ordering = ['-value']
+
+
+class Rating(models.Model):
+    star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name='Star')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Rated by the user')
+    news = models.ForeignKey(News, on_delete=models.CASCADE, verbose_name='Rating to the news')
+    rating_date = models.DateTimeField('Rating date', auto_now=True)
+
+    def __str__(self):
+        return f'{self.star} - {self.news}'
+
+    class Meta:
+        verbose_name = 'Rating'
+        verbose_name_plural = 'Ratings'
