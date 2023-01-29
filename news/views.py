@@ -3,11 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import News, Category, User
-from .forms import AddNewsForm, RegisterUserForm, ChangeUserForm
+from .models import News, Category, User, Rating
+from .forms import AddNewsForm, RegisterUserForm, ChangeUserForm, RatingForm
 
 
 class NewsIndex(ListView):
@@ -42,6 +44,12 @@ class ShowNews(DetailView):
     template_name = 'news/show_news.html'
     slug_url_kwarg = 'news_slug'
     context_object_name = 'news'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['star_form'] = RatingForm()
+
+        return context
 
 
 class AddNews(CreateView):
@@ -132,3 +140,19 @@ class ShowProfile(DetailView):
     template_name = 'news/show_profile.html'
     pk_url_kwarg = 'user_pk'
     context_object_name = 'user'
+
+
+class AddStarRating(View):
+
+    @staticmethod
+    def post(request):
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            Rating.objects.update_or_create(
+                user_id=request.user.pk,
+                news_id=int(request.POST.get("news")),
+                defaults={'star_id': int(request.POST.get("star"))}
+            )
+            return HttpResponse(status=201)
+        else:
+            return HttpResponse(status=400)
