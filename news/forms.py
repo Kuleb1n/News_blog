@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from captcha.fields import CaptchaField
-from .models import News, User
+from .models import News, User, Rating, RatingStar
 from django.core.exceptions import ValidationError
 
 
@@ -43,3 +43,13 @@ class ChangeUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'short_status', 'first_name', 'last_name', 'user_photo')
+
+
+class RatingForm(forms.ModelForm):
+    star = forms.ModelChoiceField(queryset=RatingStar.objects.all(),
+                                  widget=forms.RadioSelect(),
+                                  empty_label=None)
+
+    class Meta:
+        model = Rating
+        fields = ("star",)
