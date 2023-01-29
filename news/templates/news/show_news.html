@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     News: {{ news.title }}
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/rating.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -40,8 +45,33 @@
                         </a>
                     {% endif %}
                 </div>
+                <form action="{% url 'add_rating' %}" method="post" name="rating">
+                    <b>Rating:</b>
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ news.id }}" name="news">
+                    <span class="rating">
+                        {% for key, value in star_form.fields.star.choices %}
+                            <input id="rating{{ value }}" type="radio" name="star" value="{{ value }}">
+                            <label for="rating{{ value }}">{{ key }}</label>
+                        {% endfor %}
+                    </span>
+                    <span class="editContent">?</span>
+                </form>
                 <small class="text-muted">{{ news.created_at|date:"Y-m-d, H:i:s" }}</small>
             </div>
         </div>
     </div>
+    <script>
+        const rating = document.querySelector('form[name=rating]');
+
+        rating.addEventListener("change", function (e) {
+            let data = new FormData(this);
+            fetch(`${this.action}`, {
+                method: 'POST',
+                body: data
+            })
+                .then(response => alert("The rating is set"))
+                .catch(error => alert("Mistake"))
+        });
+    </script>
 {% endblock %}
