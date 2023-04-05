@@ -49,9 +49,9 @@
                            class="form-label">{{ form.category.label }}:</label>
                     {{ form.category }}
                     <div class="form-error">{{ form.category.errors }}</div>
-                    <div class="hide">
-                        <label for="id_user">User:</label>
-                        <select name="user" id="id_user">
+                    <div hidden="hidden">
+                        <label for="id_user" hidden="hidden">User:</label>
+                        <select name="user" id="id_user" hidden="hidden">
                             <option value="{{ request.user.pk }}">{{ request.user.email }}</option>
                         </select>
                     </div>
