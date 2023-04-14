@@ -1,6 +1,7 @@
-<nav class="container d-flex flex-column flex-md-row justify-content-between">
-    {% for category in cats %}
-        <li class="py-2 d-none d-md-inline-block"><a href="{{ category.get_absolute_url }}"
-                                                     class="nav-link">{{ category }}</a></li>
-    {% endfor %}
-</nav>
+{% for category in cats %}
+    <li>
+        <a href="{{ category.get_absolute_url }}" class="nav-link">
+            {{ category }}
+        </a>
+    </li>
+{% endfor %}
