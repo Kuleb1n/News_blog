@@ -27,7 +27,7 @@ class ShowNewsByCategory(ListView):
     model = News
     template_name = 'news/category.html'
     context_object_name = 'news'
-    allow_empty = False
+    allow_empty = True
 
     def get_queryset(self):
         return News.objects.filter(category__slug=self.kwargs['category_slug'],
