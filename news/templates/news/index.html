@@ -4,7 +4,6 @@
     News
 {% endblock %}
 
-
 {% block content %}
     <div class="row row-cols-1 row-cols-sm-2 g-2">
         {% for news in news %}
@@ -15,10 +14,13 @@
                     {% else %}
                         <img src="/media/N.png" height="400" width="100%">
                     {% endif %}
-
                     <div class="card-body">
-                        <h5 class="card-title text-center">{{ news.title }}</h5>
-                        <p class="card-text">{{ news.content|truncatewords:145 }}</p>
+                        <h5 class="card-title text-center">
+                            {{ news.title }}
+                        </h5>
+                        <p class="card-text">
+                            {{ news.content|truncatewords:145 }}
+                        </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <a href="{{ news.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">
@@ -33,8 +35,17 @@
                                     </a>
                                 {% endif %}
                             </div>
-{#                            <span>Rating: {{ rating }}</span>#}
-                            <small class="text-muted">{{ news.created_at|date:"Y-m-d, H:i:s" }}</small>
+                            <span>Rating:
+{#                                {% for i in rating.values %}#}
+{#                                    {% if news.pk == i.news_id %}#}
+{#                                        {{ i.star_id }}#}
+{#                                    {% endif %}#}
+{#                                {% endfor %}#}
+                            {{ news }}
+                            </span>
+                            <small class="text-muted">
+                                {{ news.created_at|date:"Y-m-d, H:i:s" }}
+                            </small>
                         </div>
                     </div>
                 </div>
