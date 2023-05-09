@@ -36,12 +36,12 @@
                                 {% endif %}
                             </div>
                             <span>Rating:
-{#                                {% for i in rating.values %}#}
-{#                                    {% if news.pk == i.news_id %}#}
-{#                                        {{ i.star_id }}#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-                            {{ news }}
+                                {% for i in rating.values %}
+                                    {% if news.pk == i.news_id %}
+                                        {{ i.star_id }}
+{#                                        js#}
+                                    {% endif %}
+                                {% endfor %}
                             </span>
                             <small class="text-muted">
                                 {{ news.created_at|date:"Y-m-d, H:i:s" }}
