@@ -9,4 +9,3 @@ Install packages:
 6. django-simple-captcha==0.5.17
 
 DATABASE:  PostgreSQL, I use version 15
-SECRET_KEY=django-insecure-shx9uu4txhz$$i$)v4-zn9ia(owbfq)h%amjh4p^ps-cc6gbt9
